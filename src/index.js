@@ -86,6 +86,7 @@ const Menu = () => {
 };
 const Pizza = (props) => {
   console.log(props);
+  if (props.pizzaObj.soldOut) return null;
   return (
     <div className="pizza">
       <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name} />
@@ -106,11 +107,32 @@ const Footer = () => {
   const isOpen = hour >= open && hour <= closed;
   console.log(isOpen);
 
+  if (!isOpen)
+    return (
+      <p>
+        We're happy to welcome you between {open}:00 and {closed}:00
+      </p>
+    );
+
   return (
     <footer className="footer">
-      {isOpen && (<p>We're open until {closed}:00. Visit or order online. </p>}
-      <button className="btn">Order Now</button>
+      {isOpen ? (
+        <Order closed={closed} />
+      ) : (
+        <p>
+          We're happy to welcome you between {open}:00 and {closed}:00
+        </p>
+      )}
     </footer>
+  );
+};
+
+const Order = (props) => {
+  return (
+    <div className="order">
+      <p>We're open until {props.closed}:00. Visit or order online. </p>
+      <button className="btn">Order Now</button>
+    </div>
   );
 };
 
